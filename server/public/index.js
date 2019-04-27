@@ -4,7 +4,7 @@ let earser = false;
 let isClear = false;
 let strokeValue = 6;
 
-let socket = io.connect('http://localhost:3000');
+let socket = io.connect('http://localhost:3001');
 
 // window.onresize = (e) => {
 //     resizeCanvas(e.target.width * 0.8,  e.target.height);
@@ -34,10 +34,12 @@ function setup() {
 
     document.getElementById('clear').addEventListener('click', () => {
         isClear = true;
+        socket.emit('clear', {isClear});
     });
 
     document.getElementById('stroke').addEventListener('input', (tar) => {
         strokeValue = parseInt(tar.currentTarget.value);
+        socket.emit('stroke', {stroke: strokeValue});
     });
 
 }

@@ -6,7 +6,7 @@ import http from 'http';
 import path from 'path';
 
 const app = express();
-const port = 3000;
+const port = 3001;
 
 const server = new http.Server(app);
 server.listen(port)
@@ -22,16 +22,31 @@ app.use(expressWinston.logger({
 
 app.use(express.static(path.join(__dirname.replace('src', ''), 'public')))
 
-const socket = io(server);
+const socketIo = io(server);
 
-socket.on('connection', (socket) => {
-    socket.emit('news', {hello: 'world'}),
+socketIo.on('connection', (socket) => {
+    socket.emit('news', {hello: 'world'});
+
     socket.on('color', (data) => {
         console.log(data);
+        let [r, g, b] = data['color'].replace('rgb(', '').replace(')', '').split(',').map((it: string) => parseInt(it));
+        
+        socketIo.emit('colorInput', {r, g, b});
     });
 
     socket.on('path', (data) => {
         console.log(data);
+        socketIo.emit('pathInput', data);
+    });
+
+    socket.on('stroke', (data) => {
+        console.log(data);
+        socketIo.emit("strokeInput", data);
+    });
+
+    socket.on('clear', (data) => {
+        console.log(data);
+        socketIo.emit('clearInput', data);
     });
 
     socket.on('disconnect', (reason) => {
