@@ -1,0 +1,60 @@
+<html>
+
+<head>
+    <title>Canvas</title>
+    <link rel="stylesheet" href="./index.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <div id="display">
+        <div id="color-panel">
+            <div class="selected" data-index=0></div>
+            <div data-index=1></div>
+            <div data-index=2></div>
+            <div data-index=3></div>
+            <div data-index=4></div>
+            <div data-index=5></div>
+            <div data-index=6></div>
+            <div data-index=7></div>
+            <div data-index=8></div>
+            <div data-index=9></div>
+            <div data-index=10></div>
+            <div data-index=11></div>
+        </div>
+
+        <div id="canvas">
+
+        </div>
+        <div id="util-panel">
+            <div id="buttons">
+                <button id="earser">
+                    <span style="font-size: 1.5em;">
+                        <i class="fas fa-eraser"></i>
+                    </span>
+                </button>
+                <button id="clear">
+                    <span style="font-size: 1.5em;">
+                        <i class="fas fa-times"></i>
+                    </span>
+                </button>
+            </div>
+
+            <div id="utils">
+                <label>Stroke</label>
+                <input id="stroke" type="range" value="6" max="25" min="1" step="1">
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="./index.js"></script>
+</body>
+
+</html>

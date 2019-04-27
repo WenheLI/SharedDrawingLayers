@@ -1,0 +1,130 @@
+#display {
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+}
+
+#color-panel {
+    display: grid;
+    grid: repeat(6, 60px) / auto-flow 80px;
+}
+
+#color-panel > div {
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+}
+
+#color-panel > div:nth-child(1) {
+    background-color: #ff0000;
+}
+
+#color-panel > div:nth-child(2) {
+    background-color: rgb(0, 170, 255);
+}
+
+#color-panel > div:nth-child(3) {
+    background-color: #00ff0d;
+}
+
+#color-panel > div:nth-child(4) {
+    background-color: #773577;
+}
+
+#color-panel > div:nth-child(5) {
+    background-color: #00f7ff;
+}
+
+#color-panel > div:nth-child(6) {
+    background-color: #e6e476;
+}
+
+#color-panel > div:nth-child(7) {
+    background-color: #1d2c18;
+}
+
+#color-panel > div:nth-child(8) {
+    background-color: #218300;
+}
+
+#color-panel > div:nth-child(9) {
+    background-color: #a88100;
+}
+
+#color-panel > div:nth-child(10) {
+    background-color: #f700ff;
+}
+
+#color-panel > div:nth-child(11) {
+    background-color: #3a0024;
+}
+
+#color-panel > div:nth-child(12) {
+    background-color: #002d47;
+}
+
+.selected{
+    border: aliceblue solid 2px;
+}
+
+button {
+    border: 2px solid #00BCD4;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all ease-in .5s ;
+    margin: 1em;
+    max-height: 80px;
+}
+
+button:focus {
+    outline: 0;
+}
+
+button:hover {
+    background-color: #00BCD4;
+    border: 2px solid #00BCD4;
+}
+
+#util-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+#buttons {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 0;
+    flex-wrap: wrap;
+}
+
+input[type="range"] {
+    -webkit-box-shadow: 0 1px 0 0px #424242, 0 1px 0 #060607 inset, 0px 2px 10px 0px black inset, 1px 0px 2px rgba(0, 0, 0, 0.4) inset, 0 0px 1px rgba(0, 0, 0, 0.6) inset;
+    margin-top: 2px;
+    background-color: #272728;
+    border-radius: 15px;
+    width: 400px;
+    -webkit-appearance: none;
+    height:10px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    cursor: default;
+    top: -5px;
+    height: 30px;
+    width: 20px;
+    transform: translateY(-4px);
+    background: none repeat scroll 0 0 #777;
+    border-radius: 15px;
+    -webkit-box-shadow: 0 -1px 1px black inset;
+}
+
+input[type="range"]:focus {
+    outline: 0;
+}
