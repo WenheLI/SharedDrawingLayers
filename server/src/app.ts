@@ -11,42 +11,42 @@ const port = 3001;
 const server = new http.Server(app);
 server.listen(port)
 
-app.use(expressWinston.logger({
-    transports: [new winston.transports.Console()],
-    expressFormat: true,
-    meta: true,
-    colorize: true,
-    ignoreRoute: function (req, res) { return false; },
-    msg: "HTTP {{req.method}} {{req.url}}"
-}));
+// app.use(expressWinston.logger({
+//     transports: [new winston.transports.Console()],
+//     expressFormat: true,
+//     meta: true,
+//     colorize: true,
+//     ignoreRoute: function (req, res) { return false; },
+//     msg: "HTTP {{req.method}} {{req.url}}"
+// }));
 
 app.use(express.static(path.join(__dirname.replace('src', ''), 'public')))
 
 const socketIo = io(server);
 
 socketIo.on('connection', (socket) => {
-    socket.emit('news', {hello: 'world'});
+
+    socketIo.emit('news', {id: socket.id});
 
     socket.on('color', (data) => {
-        console.log(data);
         let [r, g, b] = data['color'].replace('rgb(', '').replace(')', '').split(',').map((it: string) => parseInt(it));
-        
-        socketIo.emit('colorInput', {r, g, b});
+        console.log({id: socket.id, r, g, b});
+        socketIo.emit('colorInput', {id: socket.id, r, g, b});
     });
 
     socket.on('path', (data) => {
         console.log(data);
-        socketIo.emit('pathInput', data);
+        socketIo.emit('pathInput', Object.assign(data, {id: socket.id}));
     });
 
     socket.on('stroke', (data) => {
         console.log(data);
-        socketIo.emit("strokeInput", data);
+        socketIo.emit("strokeInput", Object.assign(data, {id: socket.id}));
     });
 
     socket.on('clear', (data) => {
         console.log(data);
-        socketIo.emit('clearInput', data);
+        socketIo.emit('clearInput', Object.assign(data, {id: socket.id}));
     });
 
     socket.on('disconnect', (reason) => {
