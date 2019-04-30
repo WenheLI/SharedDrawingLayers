@@ -7,18 +7,14 @@ void ofApp::setup(){
     status = "not connected";
     
     socketIO.setup(address);
-    /*
-     * You can also pass a query parameter at connection if needed.
-     */
-    // std::map<std::string,std::string> query;
-    // query["token"] = "hello";
-    // socketIO.setup(address, query);
     
     ofAddListener(socketIO.notifyEvent, this, &ofApp::gotEvent);
     
     ofAddListener(socketIO.connectionEvent, this, &ofApp::onConnection);
     ofSetBackgroundAuto(false);
     ofSetBackgroundColor(255);
+    
+    canvas.allocate(640, 480, GL_RGBA);
 }
 
 void ofApp::onConnection () {
@@ -51,24 +47,21 @@ void ofApp::bindEvents () {
 //--------------------------------------------------------------
 void ofApp::update(){
     
+    for (auto& user : users) {
+        user->update();
+    }
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-//    ofNoFill();
-//    ofBeginShape();
-//    for (auto p : points) {
-//        ofVertex(*p);
-//    }
-//    ofEndShape(false);
-    if (points.size() > 1){
-        ofPushStyle();
-        ofFill();
-        
-        ofSetColor(color);
-        ofDrawCircle(*points[points.size() - 1], stroke);
-        ofPopStyle();
-    }
+    int w = 640;
+    int h = 480;
+    
+    int init_w = 0;
+    int init_h = 0;
+    
+    users[0]->draw(0, 0);
 }
 
 //--------------------------------------------------------------
@@ -88,31 +81,66 @@ void ofApp::gotEvent(string& name) {
 
 //--------------------------------------------------------------
 void ofApp::onServerEvent (ofxSocketIOData& data) {
-    ofLogNotice("ofxSocketIO", data.getStringValue("hello"));
+    string id = data.getStringValue("id");
+    ofLogNotice("ID", id);
+    auto user = User(id);
+    users.push_back(make_shared<User>(user));
+//    if (users.size() == 2) {
+//        ofLog() << "0: " << users[0]->canvas << endl << "1: " << users[1]->canvas << endl;
+//    }
 }
 
 void ofApp::onColorEvent (ofxSocketIOData& data) {
-    color = ofColor(data.getIntValue("r"),
+    ofColor color = ofColor(data.getIntValue("r"),
                     data.getIntValue("g"),
                     data.getIntValue("b"));
+    string id = data.getStringValue("id");
+    for (auto& user : users) {
+        if (user->id.compare(id) == 0) {
+            user->c = color;
+            break;
+        }
+    }
 }
 
 void ofApp::onPathEvent (ofxSocketIOData& data) {
 
     float x = data.getFloatValue("mouseX");
     float y = data.getFloatValue("mouseY");
-    
+    string id = data.getStringValue("id");
     auto p = make_shared<glm::vec2>(glm::vec2(x, y));
-    points.push_back(p);
+    
+    for (auto& user : users) {
+        if (*user == id) {
+            user->pos = *p;
+        }
+
+    }
+//    points.push_back(p);
 
 }
 
 void ofApp::onStrokeEvent(ofxSocketIOData& data) {
-    stroke = data.getIntValue("stroke");
+    int stroke = data.getIntValue("stroke");
+    string id = data.getStringValue("id");
+    
+    for (auto& user : users) {
+        if (*user == id) {
+            user->stroke = stroke;
+            break;
+        }
+    }
 }
 
 void ofApp::onClearEvent(ofxSocketIOData& data) {
-    ofLog() << "clear" << endl;
+    string id = data.getStringValue("id");
+    for (auto& user : users) {
+        if (*user == id) {
+            user->is_clear = true;
+            break;
+        }
+    }
+    
 }
 
 

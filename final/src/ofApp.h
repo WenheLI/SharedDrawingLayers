@@ -4,6 +4,7 @@
 #include "ofEvents.h"
 #include "ofxSocketIO.h"
 #include "ofxSocketIOData.h"
+#include "User.hpp"
 
 class ofApp : public ofBaseApp{
 public:
@@ -36,11 +37,12 @@ public:
     ofEvent<ofxSocketIOData&> pathEvent;
     ofEvent<ofxSocketIOData&> strokeEvent;
     ofEvent<ofxSocketIOData&> clearEvent;
-
+    
+    ofFbo canvas;
+    
+    vector<shared_ptr<User>> users;
 
     
     std::string address;
     std::string status;
-    int stroke = 6;
-    ofColor color = ofColor(255, 0, 0);
 };
