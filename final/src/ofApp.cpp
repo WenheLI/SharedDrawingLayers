@@ -11,8 +11,12 @@ void ofApp::setup(){
     ofAddListener(socketIO.notifyEvent, this, &ofApp::gotEvent);
     
     ofAddListener(socketIO.connectionEvent, this, &ofApp::onConnection);
-//    ofSetBackgroundAuto(false);
+    ofSetBackgroundAuto(false);
 //    ofSetBackgroundColor(255);
+    
+    plane.set(640, 480);
+    plane.setPosition(0, 0, -1);
+    plane.setResolution(2, 2);
     
 }
 
@@ -49,12 +53,6 @@ void ofApp::bindEvents () {
     string eraserEventName = "eraserInput";
     socketIO.bindEvent(eraserEvent, eraserEventName);
     ofAddListener(eraserEvent, this, &ofApp::onEraserEvent);
-    
-    plane.set(640, 480);
-    plane.setPosition(640, 0, 0);
-    plane.setResolution(2, 2);
-
-
 }
 
 //--------------------------------------------------------------
@@ -72,13 +70,14 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-
+    mCam.begin();
     if (users.size() >= 2) {
         users[1]->canvas->getTexture().bind();
         plane.draw();
         users[1]->canvas->getTexture().unbind();
-        users[1]->draw(0, 0);
+//        users[1]->draw(0, 0);
     }
+    mCam.end();
 }
 
 //--------------------------------------------------------------

@@ -44,8 +44,8 @@ public:
     ofEvent<ofxSocketIOData&> eraserEvent;
     
     ofPlanePrimitive plane;
+    ofEasyCam mCam;
 
-    
     
     vector<shared_ptr<User>> users;
 
