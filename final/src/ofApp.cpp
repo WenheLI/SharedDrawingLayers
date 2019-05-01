@@ -11,10 +11,9 @@ void ofApp::setup(){
     ofAddListener(socketIO.notifyEvent, this, &ofApp::gotEvent);
     
     ofAddListener(socketIO.connectionEvent, this, &ofApp::onConnection);
-    ofSetBackgroundAuto(false);
-    ofSetBackgroundColor(255);
+//    ofSetBackgroundAuto(false);
+//    ofSetBackgroundColor(255);
     
-    canvas.allocate(640, 480, GL_RGBA);
 }
 
 void ofApp::onConnection () {
@@ -42,12 +41,30 @@ void ofApp::bindEvents () {
     std::string clearEventName = "clearInput";
     socketIO.bindEvent(clearEvent, clearEventName);
     ofAddListener(clearEvent, this, &ofApp::onClearEvent);
+    
+    string disconnEventName = "disconnectInput";
+    socketIO.bindEvent(disconnEvent, disconnEventName);
+    ofAddListener(disconnEvent, this, &ofApp::onDisconnEvent);
+    
+    string eraserEventName = "eraserInput";
+    socketIO.bindEvent(eraserEvent, eraserEventName);
+    ofAddListener(eraserEvent, this, &ofApp::onEraserEvent);
+    
+    plane.set(640, 480);
+    plane.setPosition(640, 0, 0);
+    plane.setResolution(2, 2);
+
+
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    
+//
     for (auto& user : users) {
+        if (!user->is_allocate) {
+            user->is_allocate = true;
+            user->canvas->allocate(640, 480, GL_RGBA);
+        }
         user->update();
     }
     
@@ -55,13 +72,13 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    int w = 640;
-    int h = 480;
-    
-    int init_w = 0;
-    int init_h = 0;
-    
-    users[0]->draw(0, 0);
+
+    if (users.size() >= 2) {
+        users[1]->canvas->getTexture().bind();
+        plane.draw();
+        users[1]->canvas->getTexture().unbind();
+        users[1]->draw(0, 0);
+    }
 }
 
 //--------------------------------------------------------------
@@ -85,9 +102,6 @@ void ofApp::onServerEvent (ofxSocketIOData& data) {
     ofLogNotice("ID", id);
     auto user = User(id);
     users.push_back(make_shared<User>(user));
-//    if (users.size() == 2) {
-//        ofLog() << "0: " << users[0]->canvas << endl << "1: " << users[1]->canvas << endl;
-//    }
 }
 
 void ofApp::onColorEvent (ofxSocketIOData& data) {
@@ -103,6 +117,8 @@ void ofApp::onColorEvent (ofxSocketIOData& data) {
     }
 }
 
+// int*
+// (*user).id ==> 
 void ofApp::onPathEvent (ofxSocketIOData& data) {
 
     float x = data.getFloatValue("mouseX");
@@ -140,7 +156,26 @@ void ofApp::onClearEvent(ofxSocketIOData& data) {
             break;
         }
     }
-    
 }
 
+void ofApp::onDisconnEvent(ofxSocketIOData& data) {
+    string id = data.getStringValue("id");
+//    for (auto i = 0; i < users.size(); i++) {
+//        if (*users[i] == id) {
+//            users.erase(users.begin()+i);
+//        }
+//    }
+    ofLog() << users.size() << endl;
+}
+
+void ofApp::onEraserEvent(ofxSocketIOData& data) {
+    string id = data.getStringValue("id");
+    for (auto& user : users) {
+        if (*user == id) {
+            user->is_eraser = data.getBoolValue("eraser");
+            ofLog() << user->is_eraser;
+            break;
+        }
+    }
+}
 

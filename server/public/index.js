@@ -1,6 +1,6 @@
 let colors = [];
 let colorIndex = 0;
-let earser = false;
+let eraser = false;
 let isClear = false;
 let strokeValue = 6;
 
@@ -28,8 +28,9 @@ function setup() {
 
     socket.emit('color', {color: colors[0]});
 
-    document.getElementById('earser').addEventListener('click', () => {
-        earser = !earser;
+    document.getElementById('eraser').addEventListener('click', () => {
+        eraser = !eraser;
+        socket.emit('eraser', {eraser});
     });
 
     document.getElementById('clear').addEventListener('click', () => {
@@ -55,7 +56,7 @@ function draw() {
 function mouseDragged() {
     push();
         noStroke();
-        fill(earser ? 255 : colors[colorIndex])
+        fill(eraser ? 255 : colors[colorIndex])
         ellipse(mouseX, mouseY, strokeValue, strokeValue);
     pop();
     

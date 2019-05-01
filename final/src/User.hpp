@@ -18,6 +18,8 @@ public:
     glm::vec2 pos;
     int stroke;
     bool is_clear;
+    bool is_eraser;
+    bool is_allocate;
     
     User(string _id);
     

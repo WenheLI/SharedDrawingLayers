@@ -21,6 +21,9 @@ public:
     void onPathEvent(ofxSocketIOData& data);
     void onStrokeEvent(ofxSocketIOData& data);
     void onClearEvent(ofxSocketIOData& data);
+    void onDisconnEvent(ofxSocketIOData& data);
+    void onEraserEvent(ofxSocketIOData& data);
+
 
 
     
@@ -37,8 +40,12 @@ public:
     ofEvent<ofxSocketIOData&> pathEvent;
     ofEvent<ofxSocketIOData&> strokeEvent;
     ofEvent<ofxSocketIOData&> clearEvent;
+    ofEvent<ofxSocketIOData&> disconnEvent;
+    ofEvent<ofxSocketIOData&> eraserEvent;
     
-    ofFbo canvas;
+    ofPlanePrimitive plane;
+
+    
     
     vector<shared_ptr<User>> users;
 

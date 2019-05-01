@@ -51,6 +51,12 @@ socketIo.on('connection', (socket) => {
 
     socket.on('disconnect', (reason) => {
         console.log(socket.id);
+        socketIo.emit('disconnectInput', {id: socket.id});
+    });
+
+    socket.on('eraser', (data) => {
+        console.log(data);
+        socketIo.emit('eraserInput', Object.assign(data, {id: socket.id}));
     });
 });
 

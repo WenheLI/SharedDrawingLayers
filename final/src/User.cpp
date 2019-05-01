@@ -15,6 +15,8 @@ User::User(string _id) {
     this->stroke = 6;
     this->pos = glm::vec2(-6,-6);
     this->is_clear = false;
+    this->is_eraser = false;
+    this->is_allocate = false;
 }
 
 void User::set_color(int r, int g, int b) {
@@ -28,7 +30,7 @@ void User::set_color(ofColor c) {
 void User::update() {
     this->canvas->begin();
     ofFill();
-    ofSetColor(this->c);
+    ofSetColor(this->is_eraser ? ofColor(255, 255, 255) : this->c);
     ofDrawCircle(this->pos, stroke);
     if (this->is_clear) {
         ofClear(255,255,255, 255);
