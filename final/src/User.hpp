@@ -20,11 +20,14 @@ public:
     bool is_clear;
     bool is_eraser;
     bool is_allocate;
+    bool is_using;
+    bool is_freed;
     
     User(string _id);
     
     void set_color(int r, int g, int b);
     void set_color(ofColor c);
+    void set_free();
     void update();
     void draw(int x, int y);
     

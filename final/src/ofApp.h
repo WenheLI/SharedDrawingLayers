@@ -35,6 +35,7 @@ public:
     void onConnection();
     void bindEvents();
     
+    
     ofEvent<ofxSocketIOData&> serverEvent;
     ofEvent<ofxSocketIOData&> colorEvent;
     ofEvent<ofxSocketIOData&> pathEvent;

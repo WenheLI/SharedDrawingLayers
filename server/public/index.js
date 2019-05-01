@@ -43,6 +43,20 @@ function setup() {
         socket.emit('stroke', {stroke: strokeValue});
     });
 
+    document.getElementById('export').addEventListener('click', () => {
+        document.getElementsByTagName('canvas')[0].toBlob((b) => {
+            let downloadLink = document.createElement('a');
+            downloadLink.href = URL.createObjectURL(b);
+            downloadLink.download = "export.jpg";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            let tempTimer = setTimeout(() => {
+                document.body.removeChild(downloadLink)
+                clearTimeout(tempTimer);
+            }, 100);
+        })
+    });
+
 }
 
 function draw() {

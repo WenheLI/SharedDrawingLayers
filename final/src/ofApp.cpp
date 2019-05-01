@@ -11,12 +11,14 @@ void ofApp::setup(){
     ofAddListener(socketIO.notifyEvent, this, &ofApp::gotEvent);
     
     ofAddListener(socketIO.connectionEvent, this, &ofApp::onConnection);
-    ofSetBackgroundAuto(false);
+//    ofSetBackgroundAuto(false);
 //    ofSetBackgroundColor(255);
     
     plane.set(640, 480);
-    plane.setPosition(0, 0, -1);
-    plane.setResolution(2, 2);
+    plane.setPosition(0, 0, 0);
+    plane.setResolution(4, 4);
+    
+    
     
 }
 
@@ -71,12 +73,30 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     mCam.begin();
-    if (users.size() >= 2) {
-        users[1]->canvas->getTexture().bind();
-        plane.draw();
-        users[1]->canvas->getTexture().unbind();
-//        users[1]->draw(0, 0);
+    
+    
+//    ofTexture t = mImage2.getTexture();
+//    t.bind();
+//    plane.draw();
+//    t.unbind();
+    glm::vec3 trans = glm::vec3(-ofGetWidth()/4, -ofGetHeight()/4, -1);
+    for (size_t i = 1 ; i < users.size(); i++) {
+        if (users[i]->is_using) {
+            ofPushMatrix();
+            ofTranslate(trans);
+            users[i]->draw(0, 0);
+            ofPopMatrix();
+            trans.z -= 20;
+        } else if(users[i]->is_freed) {
+            users[i]->set_free();
+        }
     }
+//    if (users.size() == 2) {
+//        ofTexture t = users[1]->canvas->getTexture();
+//        plane.mapTexCoordsFromTexture(t);
+//        plane.draw(ofPolyRenderMode::OF_MESH_FILL);
+//    }
+
     mCam.end();
 }
 
@@ -140,7 +160,7 @@ void ofApp::onStrokeEvent(ofxSocketIOData& data) {
     string id = data.getStringValue("id");
     
     for (auto& user : users) {
-        if (*user == id) {
+        if (user->is_using && *user == id) {
             user->stroke = stroke;
             break;
         }
@@ -150,27 +170,29 @@ void ofApp::onStrokeEvent(ofxSocketIOData& data) {
 void ofApp::onClearEvent(ofxSocketIOData& data) {
     string id = data.getStringValue("id");
     for (auto& user : users) {
-        if (*user == id) {
+        if (user->is_using && *user == id) {
             user->is_clear = true;
             break;
         }
     }
+    
+    
 }
 
 void ofApp::onDisconnEvent(ofxSocketIOData& data) {
     string id = data.getStringValue("id");
-//    for (auto i = 0; i < users.size(); i++) {
-//        if (*users[i] == id) {
-//            users.erase(users.begin()+i);
-//        }
-//    }
+    for (auto i = 0; i < users.size(); i++) {
+        if (users[i]->is_using && *users[i] == id) {
+            users[i]->is_using = false;
+        }
+    }
     ofLog() << users.size() << endl;
 }
 
 void ofApp::onEraserEvent(ofxSocketIOData& data) {
     string id = data.getStringValue("id");
     for (auto& user : users) {
-        if (*user == id) {
+        if (user->is_using && *user == id) {
             user->is_eraser = data.getBoolValue("eraser");
             ofLog() << user->is_eraser;
             break;
