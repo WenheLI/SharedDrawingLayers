@@ -30,6 +30,8 @@ public:
     ofConePrimitive cone;
     ofPlanePrimitive plane;
     
+    glm::vec3 trans_pos;
+    
     int stroke;
     bool is_clear;
     bool is_eraser;

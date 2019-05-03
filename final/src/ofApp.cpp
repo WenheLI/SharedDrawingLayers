@@ -77,12 +77,11 @@ void ofApp::draw(){
     mShader.begin();
     for (size_t i = 1 ; i < users.size(); i++) {
         if (users[i]->is_using) {
-            ofTranslate(trans);
+            ofPushMatrix();
+            ofTranslate(users[i]->trans_pos);
             mShader.setUniformTexture("tex0", users[i]->canvas->getTexture(), int(i));
             users[i]->draw_primitive();
-            trans.z -= 10;
-            trans.x -= 10;
-            trans.y -= 10;
+            ofPopMatrix();
         } else if(users[i]->is_freed) {
             users[i]->set_free();
         }

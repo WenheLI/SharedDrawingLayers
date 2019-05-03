@@ -21,6 +21,11 @@ User::User(string _id) {
     this->is_using = true;
     this->is_freed = false;
     
+    float win_height = ofGetHeight();
+    float win_width = ofGetWidth();
+    
+    this->trans_pos = glm::vec3(ofRandom(-win_width * .25, win_width*.25), ofRandom(-win_height * .25, win_height * .25), ofRandom(-50, 20));
+    
     this->type = int(ofRandom(0, 5));
 }
 
