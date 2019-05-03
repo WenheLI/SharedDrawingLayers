@@ -6,10 +6,6 @@ let strokeValue = 6;
 
 let socket = io.connect('http://localhost:3001');
 
-// window.onresize = (e) => {
-//     resizeCanvas(e.target.width * 0.8,  e.target.height);
-// }
-
 function setup() {
     let canvas = createCanvas(640, 480);
     canvas.parent('canvas');
@@ -28,10 +24,10 @@ function setup() {
 
     socket.emit('color', {color: colors[0]});
 
-    document.getElementById('eraser').addEventListener('click', () => {
-        eraser = !eraser;
-        socket.emit('eraser', {eraser});
-    });
+    // document.getElementById('eraser').addEventListener('click', () => {
+    //     eraser = !eraser;
+    //     socket.emit('eraser', {eraser});
+    // });
 
     document.getElementById('clear').addEventListener('click', () => {
         isClear = true;

@@ -21,7 +21,7 @@ User::User(string _id) {
     this->is_using = true;
     this->is_freed = false;
     
-    this->type = 0;
+    this->type = int(ofRandom(0, 5));
 }
 
 void User::set_color(int r, int g, int b) {
@@ -36,7 +36,7 @@ void User::update() {
     this->canvas->begin();
     ofFill();
     ofSetColor(this->is_eraser ? ofColor(255, 255, 255) : this->c);
-    ofDrawCircle(this->pos, stroke);
+    ofDrawCircle(this->pos, stroke*1.1);
     if (this->is_clear) {
         ofClear(0,0,0);
         is_clear = false;
@@ -62,27 +62,27 @@ void User::draw(int x, int y) {
 void User::init_primitive() {
     switch(this->type) {
         case 0: {
-            this->cylinder.set(50, 100);
+            this->cylinder.set(ofRandom(80, 150), ofRandom(80, 150));
             this->cylinder.mapTexCoordsFromTexture(this->canvas->getTexture());
             break;
         }
         case 1: {
-            this->sphere.set(50, 32);
+            this->sphere.set(ofRandom(60,150), 32);
             this->sphere.mapTexCoordsFromTexture(this->canvas->getTexture());
             break;
         }
         case 2: {
-            this->box.set(50, 50, 50);
+            this->box.set(ofRandom(80, 200), ofRandom(80, 100), ofRandom(80, 150));
             this->box.mapTexCoordsFromTexture(this->canvas->getTexture());
             break;
         }
         case 3: {
-            this->cone.set(50, 60);
+            this->cone.set(ofRandom(60, 150), ofRandom(60, 150));
             this->cone.mapTexCoordsFromTexture(this->canvas->getTexture());
             break;
         }
         case 4: {
-            this->plane.set(100, 100);
+            this->plane.set(ofRandom(100, 200), ofRandom(100, 200));
             this->plane.mapTexCoordsFromTexture(this->canvas->getTexture());
             break;
         }

@@ -72,12 +72,7 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     mCam.begin();
-    
-    
-//    ofTexture t = mImage2.getTexture();
-//    t.bind();
-//    plane.draw();
-//    t.unbind();
+
     glm::vec3 trans = glm::vec3(0, 0, -1);
     mShader.begin();
     for (size_t i = 1 ; i < users.size(); i++) {
@@ -85,17 +80,14 @@ void ofApp::draw(){
             ofTranslate(trans);
             mShader.setUniformTexture("tex0", users[i]->canvas->getTexture(), int(i));
             users[i]->draw_primitive();
-            trans.z -= 50;
+            trans.z -= 10;
+            trans.x -= 10;
+            trans.y -= 10;
         } else if(users[i]->is_freed) {
             users[i]->set_free();
         }
     }
     mShader.end();
-//    if (users.size() == 2) {
-//        ofTexture t = users[1]->canvas->getTexture();
-//        plane.mapTexCoordsFromTexture(t);
-//        plane.draw(ofPolyRenderMode::OF_MESH_FILL);
-//    }
 
     mCam.end();
 }
@@ -120,6 +112,7 @@ void ofApp::onServerEvent (ofxSocketIOData& data) {
     string id = data.getStringValue("id");
     ofLogNotice("ID", id);
     auto user = User(id);
+    ofLog() << "id:" << user.type << endl;
     users.push_back(make_shared<User>(user));
 }
 
@@ -151,8 +144,6 @@ void ofApp::onPathEvent (ofxSocketIOData& data) {
         }
 
     }
-//    points.push_back(p);
-
 }
 
 void ofApp::onStrokeEvent(ofxSocketIOData& data) {
