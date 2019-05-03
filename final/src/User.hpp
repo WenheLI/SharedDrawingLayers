@@ -16,6 +16,20 @@ public:
     shared_ptr<ofFbo> canvas;
     ofColor c;
     glm::vec2 pos;
+    
+    int type;
+    //0 Cylinder
+    //1 Shpere
+    //2 Box
+    //3 Cone
+    //4 Plane
+    
+    ofCylinderPrimitive cylinder;
+    ofSpherePrimitive sphere;
+    ofBoxPrimitive box;
+    ofConePrimitive cone;
+    ofPlanePrimitive plane;
+    
     int stroke;
     bool is_clear;
     bool is_eraser;
@@ -30,6 +44,9 @@ public:
     void set_free();
     void update();
     void draw(int x, int y);
+    
+    void init_primitive();
+    void draw_primitive();
     
     inline bool operator == (const string& _id){
         return _id.compare(this->id) == 0;

@@ -20,6 +20,8 @@ User::User(string _id) {
     this->is_allocate = false;
     this->is_using = true;
     this->is_freed = false;
+    
+    this->type = 0;
 }
 
 void User::set_color(int r, int g, int b) {
@@ -55,4 +57,61 @@ void User::set_free() {
 
 void User::draw(int x, int y) {
     this->canvas->draw(x, y);
+}
+
+void User::init_primitive() {
+    switch(this->type) {
+        case 0: {
+            this->cylinder.set(50, 100);
+            this->cylinder.mapTexCoordsFromTexture(this->canvas->getTexture());
+            break;
+        }
+        case 1: {
+            this->sphere.set(50, 32);
+            this->sphere.mapTexCoordsFromTexture(this->canvas->getTexture());
+            break;
+        }
+        case 2: {
+            this->box.set(50, 50, 50);
+            this->box.mapTexCoordsFromTexture(this->canvas->getTexture());
+            break;
+        }
+        case 3: {
+            this->cone.set(50, 60);
+            this->cone.mapTexCoordsFromTexture(this->canvas->getTexture());
+            break;
+        }
+        case 4: {
+            this->plane.set(100, 100);
+            this->plane.mapTexCoordsFromTexture(this->canvas->getTexture());
+            break;
+        }
+        default: break;
+    }
+}
+
+void User::draw_primitive() {
+    switch(this->type) {
+        case 0: {
+            this->cylinder.draw(ofPolyRenderMode::OF_MESH_FILL);
+            break;
+        }
+        case 1: {
+            this->sphere.draw(ofPolyRenderMode::OF_MESH_FILL);
+            break;
+        }
+        case 2: {
+            this->box.draw(ofPolyRenderMode::OF_MESH_FILL);
+            break;
+        }
+        case 3: {
+            this->cone.draw(ofPolyRenderMode::OF_MESH_FILL);
+            break;
+        }
+        case 4: {
+            this->plane.draw(ofPolyRenderMode::OF_MESH_FILL);
+            break;
+        }
+        default: break;
+    }
 }

@@ -49,7 +49,8 @@ public:
 
     
     vector<shared_ptr<User>> users;
-
+    
+    ofShader mShader;
     
     std::string address;
     std::string status;

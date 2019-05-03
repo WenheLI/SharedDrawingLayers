@@ -77,6 +77,5 @@ function mouseDragged() {
     if (mouseX >= 0 && mouseX <= parseInt(canvas.style.width.split('.')[0]) && 
         mouseY >= 0 && mouseY <= parseInt(canvas.style.height.split('.')[0])) {
             socket.emit('path', {mouseX, mouseY});
-    }
-    
+    }   
 }

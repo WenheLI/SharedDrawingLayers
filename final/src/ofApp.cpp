@@ -14,12 +14,10 @@ void ofApp::setup(){
 //    ofSetBackgroundAuto(false);
 //    ofSetBackgroundColor(255);
     
-    plane.set(640, 480);
-    plane.setPosition(0, 0, 0);
-    plane.setResolution(4, 4);
-    
-    
-    
+//    plane.set(640, 480);
+//    plane.setPosition(0, 0, 0);
+//    plane.setResolution(4, 4);
+    mShader.load("shader");
 }
 
 void ofApp::onConnection () {
@@ -64,6 +62,7 @@ void ofApp::update(){
         if (!user->is_allocate) {
             user->is_allocate = true;
             user->canvas->allocate(640, 480, GL_RGBA);
+            user->init_primitive();
         }
         user->update();
     }
@@ -79,18 +78,19 @@ void ofApp::draw(){
 //    t.bind();
 //    plane.draw();
 //    t.unbind();
-    glm::vec3 trans = glm::vec3(-ofGetWidth()/4, -ofGetHeight()/4, -1);
+    glm::vec3 trans = glm::vec3(0, 0, -1);
+    mShader.begin();
     for (size_t i = 1 ; i < users.size(); i++) {
         if (users[i]->is_using) {
-            ofPushMatrix();
             ofTranslate(trans);
-            users[i]->draw(0, 0);
-            ofPopMatrix();
-            trans.z -= 20;
+            mShader.setUniformTexture("tex0", users[i]->canvas->getTexture(), int(i));
+            users[i]->draw_primitive();
+            trans.z -= 50;
         } else if(users[i]->is_freed) {
             users[i]->set_free();
         }
     }
+    mShader.end();
 //    if (users.size() == 2) {
 //        ofTexture t = users[1]->canvas->getTexture();
 //        plane.mapTexCoordsFromTexture(t);
