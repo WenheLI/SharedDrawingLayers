@@ -23,8 +23,7 @@ public:
     void onClearEvent(ofxSocketIOData& data);
     void onDisconnEvent(ofxSocketIOData& data);
     void onEraserEvent(ofxSocketIOData& data);
-
-
+    void onRotateEvent(ofxSocketIOData& data);
 
     
     ofxSocketIO socketIO;
@@ -43,7 +42,8 @@ public:
     ofEvent<ofxSocketIOData&> clearEvent;
     ofEvent<ofxSocketIOData&> disconnEvent;
     ofEvent<ofxSocketIOData&> eraserEvent;
-    
+    ofEvent<ofxSocketIOData&> rotateEvent;
+
     ofPlanePrimitive plane;
     ofEasyCam mCam;
 

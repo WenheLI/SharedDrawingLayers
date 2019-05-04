@@ -31,6 +31,7 @@ public:
     ofPlanePrimitive plane;
     
     glm::vec3 trans_pos;
+    glm::vec3 rotation_vec;
     
     int stroke;
     bool is_clear;
@@ -38,6 +39,7 @@ public:
     bool is_allocate;
     bool is_using;
     bool is_freed;
+    bool is_drawed;
     
     User(string _id);
     
@@ -49,6 +51,7 @@ public:
     
     void init_primitive();
     void draw_primitive();
+    void draw_wireframe();
     
     inline bool operator == (const string& _id){
         return _id.compare(this->id) == 0;

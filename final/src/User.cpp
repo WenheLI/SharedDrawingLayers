@@ -13,13 +13,16 @@ User::User(string _id) {
     this->is_clear = false;
     this->c = ofColor(255, 0, 0);
     this->stroke = 6;
+    
     this->pos = glm::vec2(-6,-6);
+    this->rotation_vec = glm::vec3(0,0,0);
     
     this->is_clear = false;
     this->is_eraser = false;
     this->is_allocate = false;
     this->is_using = true;
     this->is_freed = false;
+    this->is_drawed = false;
     
     float win_height = ofGetHeight();
     float win_width = ofGetWidth();
@@ -115,6 +118,32 @@ void User::draw_primitive() {
         }
         case 4: {
             this->plane.draw(ofPolyRenderMode::OF_MESH_FILL);
+            break;
+        }
+        default: break;
+    }
+}
+
+void User::draw_wireframe() {
+    switch(this->type) {
+        case 0: {
+            this->cylinder.draw(ofPolyRenderMode::OF_MESH_WIREFRAME);
+            break;
+        }
+        case 1: {
+            this->sphere.draw(ofPolyRenderMode::OF_MESH_WIREFRAME);
+            break;
+        }
+        case 2: {
+            this->box.draw(ofPolyRenderMode::OF_MESH_WIREFRAME);
+            break;
+        }
+        case 3: {
+            this->cone.draw(ofPolyRenderMode::OF_MESH_WIREFRAME);
+            break;
+        }
+        case 4: {
+            this->plane.draw(ofPolyRenderMode::OF_MESH_WIREFRAME);
             break;
         }
         default: break;

@@ -30,37 +30,37 @@ socketIo.on('connection', (socket) => {
 
     socket.on('color', (data) => {
         let [r, g, b] = data['color'].replace('rgb(', '').replace(')', '').split(',').map((it: string) => parseInt(it));
-        console.log({id: socket.id, r, g, b});
+        // console.log({id: socket.id, r, g, b});
         socketIo.emit('colorInput', {id: socket.id, r, g, b});
     });
 
     socket.on('path', (data) => {
-        console.log(data);
+        // console.log(data);
         socketIo.emit('pathInput', Object.assign(data, {id: socket.id}));
     });
 
     socket.on('stroke', (data) => {
-        console.log(data);
+        // console.log(data);
         socketIo.emit("strokeInput", Object.assign(data, {id: socket.id}));
     });
 
     socket.on('clear', (data) => {
-        console.log(data);
+        // console.log(data);
         socketIo.emit('clearInput', Object.assign(data, {id: socket.id}));
     });
 
     socket.on('disconnect', (reason) => {
-        console.log(socket.id);
+        // console.log(socket.id);
         socketIo.emit('disconnectInput', {id: socket.id});
     });
 
     socket.on('eraser', (data) => {
-        console.log(data);
+        // console.log(data);
         socketIo.emit('eraserInput', Object.assign(data, {id: socket.id}));
     });
 
     socket.on('rotate', (data) => {
-        socketIo.emit('rotateInput', data);
+        socketIo.emit('rotateInput', Object.assign(data, {id: socket.id}));
     })
 });
 

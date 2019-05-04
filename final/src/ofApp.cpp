@@ -53,6 +53,10 @@ void ofApp::bindEvents () {
     string eraserEventName = "eraserInput";
     socketIO.bindEvent(eraserEvent, eraserEventName);
     ofAddListener(eraserEvent, this, &ofApp::onEraserEvent);
+    
+    string rotateEventName = "rotateInput";
+    socketIO.bindEvent(rotateEvent, rotateEventName);
+    ofAddListener(rotateEvent, this, &ofApp::onRotateEvent);
 }
 
 //--------------------------------------------------------------
@@ -76,8 +80,11 @@ void ofApp::draw(){
     glm::vec3 trans = glm::vec3(0, 0, -1);
     mShader.begin();
     for (size_t i = 1 ; i < users.size(); i++) {
-        if (users[i]->is_using) {
+        if (users[i]->is_using && users[i]->is_drawed) {
             ofPushMatrix();
+            ofRotateXDeg(users[i]->rotation_vec.x);
+            ofRotateYDeg(users[i]->rotation_vec.y);
+            ofRotateZDeg(users[i]->rotation_vec.z);
             ofTranslate(users[i]->trans_pos);
             mShader.setUniformTexture("tex0", users[i]->canvas->getTexture(), int(i));
             users[i]->draw_primitive();
@@ -87,6 +94,14 @@ void ofApp::draw(){
         }
     }
     mShader.end();
+    
+    for (size_t i = 1 ; i < users.size(); i++) {
+        if (users[i]->is_using && !users[i]->is_drawed) {
+            users[i]->draw_wireframe();
+            
+        }
+           
+    }
 
     mCam.end();
 }
@@ -139,6 +154,7 @@ void ofApp::onPathEvent (ofxSocketIOData& data) {
     
     for (auto& user : users) {
         if (*user == id) {
+            if (!user->is_drawed) user->is_drawed = true;
             user->pos = *p;
         }
 
@@ -185,6 +201,19 @@ void ofApp::onEraserEvent(ofxSocketIOData& data) {
         if (user->is_using && *user == id) {
             user->is_eraser = data.getBoolValue("eraser");
             ofLog() << user->is_eraser;
+            break;
+        }
+    }
+}
+
+void ofApp::onRotateEvent(ofxSocketIOData &data) {
+    string id = data.getStringValue("id");
+    for (auto& user : users) {
+        if (user->is_using && *user == id) {
+            auto alpha = user->is_eraser = data.getFloatValue("alpha");
+            auto beta = user->is_eraser = data.getFloatValue("beta");
+            auto gamma = user->is_eraser = data.getFloatValue("gamma");
+            user->rotation_vec = glm::vec3(alpha, beta, gamma);
             break;
         }
     }
