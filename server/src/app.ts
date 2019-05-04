@@ -58,6 +58,10 @@ socketIo.on('connection', (socket) => {
         console.log(data);
         socketIo.emit('eraserInput', Object.assign(data, {id: socket.id}));
     });
+
+    socket.on('rotate', (data) => {
+        socketIo.emit('rotateInput', data);
+    })
 });
 
 

@@ -5,6 +5,10 @@ let isClear = false;
 let strokeValue = 6;
 
 let socket = io.connect('http://localhost:3001');
+window.addEventListener("devicemotion", (e) => {
+   let {alpha, beta, gamma} = e.rotationRate;
+    socket.emit('rotation', {alpha, beta, gamma});
+}, true);
 
 function setup() {
     let canvas = createCanvas(640, 480);
