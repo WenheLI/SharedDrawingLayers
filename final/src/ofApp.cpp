@@ -97,7 +97,10 @@ void ofApp::draw(){
     
     for (size_t i = 1 ; i < users.size(); i++) {
         if (users[i]->is_using && !users[i]->is_drawed) {
+            ofPushMatrix();
+            ofTranslate(users[i]->trans_pos);
             users[i]->draw_wireframe();
+            ofPopMatrix();
             
         }
            

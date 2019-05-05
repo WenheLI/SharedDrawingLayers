@@ -27,7 +27,7 @@ User::User(string _id) {
     float win_height = ofGetHeight();
     float win_width = ofGetWidth();
     
-    this->trans_pos = glm::vec3(ofRandom(-win_width * .25, win_width*.25), ofRandom(-win_height * .25, win_height * .25), ofRandom(-50, 20));
+    this->trans_pos = glm::vec3(ofRandom(-win_width * .25, win_width*.25), ofRandom(-win_height * .25, win_height * .25), ofRandom(-50, 10));
     
     this->type = int(ofRandom(0, 5));
 }
@@ -70,22 +70,22 @@ void User::draw(int x, int y) {
 void User::init_primitive() {
     switch(this->type) {
         case 0: {
-            this->cylinder.set(ofRandom(80, 150), ofRandom(80, 150));
+            this->cylinder.set(ofRandom(80, 100), ofRandom(80, 100));
             this->cylinder.mapTexCoordsFromTexture(this->canvas->getTexture());
             break;
         }
         case 1: {
-            this->sphere.set(ofRandom(60,150), 32);
+            this->sphere.set(ofRandom(60,100), 32);
             this->sphere.mapTexCoordsFromTexture(this->canvas->getTexture());
             break;
         }
         case 2: {
-            this->box.set(ofRandom(80, 200), ofRandom(80, 100), ofRandom(80, 150));
+            this->box.set(ofRandom(80, 100), ofRandom(80, 100), ofRandom(80, 120));
             this->box.mapTexCoordsFromTexture(this->canvas->getTexture());
             break;
         }
         case 3: {
-            this->cone.set(ofRandom(60, 150), ofRandom(60, 150));
+            this->cone.set(ofRandom(60, 100), ofRandom(60, 100));
             this->cone.mapTexCoordsFromTexture(this->canvas->getTexture());
             break;
         }

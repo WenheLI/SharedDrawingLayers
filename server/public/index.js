@@ -4,11 +4,14 @@ let eraser = false;
 let isClear = false;
 let strokeValue = 6;
 
-let socket = io.connect('http://localhost:3001');
-window.addEventListener("devicemotion", (e) => {
-   let {alpha, beta, gamma} = e.rotationRate;
-    socket.emit('rotation', {alpha, beta, gamma});
-}, true);
+let ip = '10.20.87.171';
+
+let socket = io.connect(`http://${ip}:3001`);
+// window.addEventListener("deviceorientation", function(e) {
+//     console.log(e);
+//    let {alpha, beta, gamma} = e.rotationRate;
+//     socket.emit('rotation', {alpha, beta, gamma});
+// }, true);
 
 function setup() {
     let canvas = createCanvas(640, 480);
